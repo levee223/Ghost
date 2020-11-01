@@ -123,7 +123,7 @@
             "type": "string"
         },
         "navigation": {
-            "defaultValue": "[{\"label\":\"Home\", \"url\":\"/\"},{\"label\":\"Tag\", \"url\":\"/tag/getting-started/\"}, {\"label\":\"Author\", \"url\":\"/author/ghost/\"},{\"label\":\"Help\", \"url\":\"https://ghost.org/docs/\"}]",
+            "defaultValue": "[{\"label\":\"Home\", \"url\":\"/\"},{\"label\":\"Tag\", \"url\":\"/tags/\"}, {\"label\":\"Author\", \"url\":\"/authors/\"},{\"label\":\"Help\", \"url\":\"https://ghost.org/docs/\"}]",
             "type": "array"
         },
         "secondary_navigation": {
