@@ -1,7 +1,5 @@
-const fs = require('fs-extra');
 const express = require('../../../../shared/express');
 const url = require('url');
-const path = require('path');
 const debug = require('ghost-ignition').debug('web:shared:mw:custom-redirects');
 const config = require('../../../../shared/config');
 const urlUtils = require('../../../../shared/url-utils');
@@ -20,8 +18,8 @@ _private.registerRoutes = () => {
     customRedirectsRouter = express.Router('redirects');
 
     try {
-        let redirects = fs.readFileSync(path.join(config.getContentPath('data'), 'redirects.json'), 'utf-8');
-        redirects = JSON.parse(redirects);
+        const redirects = redirectsService.settings.loadRedirectsFile();
+
         redirectsService.validation.validate(redirects);
 
         redirects.forEach((redirect) => {
@@ -81,7 +79,8 @@ _private.registerRoutes = () => {
             logging.error(new errors.IncorrectUsageError({
                 message: i18n.t('errors.middleware.redirects.register'),
                 context: err.message,
-                help: 'https://ghost.org/docs/api/handlebars-themes/routing/redirects/'
+                help: 'https://ghost.org/docs/api/handlebars-themes/routing/redirects/',
+                err
             }));
         }
     }
