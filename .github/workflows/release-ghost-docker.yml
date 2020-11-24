@@ -1,0 +1,26 @@
+name: Release Ghost-docker
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  release-new-version:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: 'lameducks/Ghost-docker'
+          ssh-key: ${{ secrets.GHOST_DOCKER_SSH_KEY }}
+
+      - run: |
+          export LATEST_TAG=$(curl -s "https://api.github.com/repos/lameducks/Ghost/releases/latest" | jq -r '.tag_name[1:]')
+          if [ ! $(git tag -l "$LATEST_TAG") ]; then sed -i "s/^ENV GHOST_VERSION .*/ENV GHOST_VERSION $LATEST_TAG/" Dockerfile* ; fi
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "Release $LATEST_TAG"
+          git tag $LATEST_TAG
+          git push
+          git push origin $LATEST_TAG
