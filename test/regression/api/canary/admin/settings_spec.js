@@ -256,6 +256,11 @@ const defaultSettingsKeyTypes = [
         group: 'portal'
     },
     {
+        key: 'portal_products',
+        type: 'array',
+        group: 'portal'
+    },
+    {
         key: 'portal_button_style',
         type: 'string',
         group: 'portal'
@@ -342,11 +347,6 @@ const defaultSettingsKeyTypes = [
     },
     {
         key: 'newsletter_show_badge',
-        type: 'boolean',
-        group: 'newsletter'
-    },
-    {
-        key: 'newsletter_show_header',
         type: 'boolean',
         group: 'newsletter'
     },
@@ -677,8 +677,10 @@ describe('Settings API (canary)', function () {
 
             jsonResponse.settings.length.should.eql(1);
             testUtils.API.checkResponseValue(jsonResponse.settings[0], ['id', 'group', 'key', 'value', 'type', 'flags', 'created_at', 'updated_at']);
+
+            const jsonObjectRegex = /^\{.*\}$/; // '{...}'
             jsonResponse.settings[0].key.should.eql('labs');
-            jsonResponse.settings[0].value.should.eql(JSON.stringify({}));
+            jsonResponse.settings[0].value.should.match(jsonObjectRegex);
         });
 
         it('Can read deprecated default_locale', function (done) {

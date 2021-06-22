@@ -54,6 +54,7 @@ const defaultSettingsKeyTypes = [
     {key: 'portal_name', type: 'portal'},
     {key: 'portal_button', type: 'portal'},
     {key: 'portal_plans', type: 'portal'},
+    {key: 'portal_products', type: 'portal'},
     {key: 'portal_button_style', type: 'portal'},
     {key: 'portal_button_icon', type: 'portal'},
     {key: 'portal_button_signup_text', type: 'portal'},
@@ -71,7 +72,6 @@ const defaultSettingsKeyTypes = [
     {key: 'active_timezone', type: 'blog'},
     {key: 'default_locale', type: 'blog'},
     {key: 'newsletter_show_badge', type: 'newsletter'},
-    {key: 'newsletter_show_header', type: 'newsletter'},
     {key: 'newsletter_header_image', type: 'newsletter'},
     {key: 'newsletter_show_header_icon', type: 'newsletter'},
     {key: 'newsletter_show_header_title', type: 'newsletter'},
@@ -286,8 +286,10 @@ describe('Settings API (v2)', function () {
 
             jsonResponse.settings.length.should.eql(1);
             testUtils.API.checkResponseValue(jsonResponse.settings[0], ['id', 'key', 'value', 'type', 'flags', 'created_at', 'updated_at']);
+
+            const jsonObjectRegex = /^\{.*\}$/; // '{...}'
             jsonResponse.settings[0].key.should.eql('labs');
-            jsonResponse.settings[0].value.should.eql(JSON.stringify({}));
+            jsonResponse.settings[0].value.should.match(jsonObjectRegex);
         });
 
         it('Can read default_locale deprecated in v3', function (done) {
